@@ -20,7 +20,12 @@ const generateReport = async (req, res) => {
     }));
 
     const scriptPath = path.join(__dirname, '../scripts/report_generator.py');
-    const process_py = spawn(process.env.PYTHON_PATH || 'python', [scriptPath]);
+    const venvPythonPath = path.join(__dirname, '../../.venv/Scripts/python.exe');
+    
+    // Check if venv python exists, else use default 'python'
+    const pythonCmd = fs.existsSync(venvPythonPath) ? venvPythonPath : (process.env.PYTHON_PATH || 'python');
+    
+    const process_py = spawn(pythonCmd, [scriptPath]);
 
     process_py.stdin.write(JSON.stringify(data));
     process_py.stdin.end();

@@ -3,7 +3,7 @@ import Webcam from 'react-webcam';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Shield, Scan, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 
-const FaceAuth = ({ onVerify, onCancel }) => {
+const FaceAuth = ({ onVerify, onCancel, successMessage = "Accessing secure data..." }) => {
     const webcamRef = useRef(null);
     const [status, setStatus] = useState('idle'); // idle, scanning, verified, failed
     const [progress, setProgress] = useState(0);
@@ -31,7 +31,7 @@ const FaceAuth = ({ onVerify, onCancel }) => {
         <motion.div 
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="fixed inset-0 z-[3000] flex items-center justify-center bg-gray-900/90 backdrop-blur-xl p-4"
+            className="fixed inset-0 z-[6000] flex items-center justify-center bg-gray-900/90 backdrop-blur-xl p-4"
         >
             <div className="bg-white w-full max-w-lg rounded-[3rem] overflow-hidden shadow-2xl relative">
                 {/* Header */}
@@ -114,7 +114,7 @@ const FaceAuth = ({ onVerify, onCancel }) => {
                         </div>
                     ) : (
                         <div className="text-center text-emerald-600 font-bold flex items-center justify-center gap-2">
-                             Redirecting to your dashboard...
+                             {successMessage}
                         </div>
                     )}
                     

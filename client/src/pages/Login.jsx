@@ -91,6 +91,7 @@ const Login = () => {
                 <FaceAuth 
                     onVerify={handleFaceVerified} 
                     onCancel={() => setShowFaceAuth(false)} 
+                    successMessage="Identity Verified. Redirecting..."
                 />
             )}
         </div>

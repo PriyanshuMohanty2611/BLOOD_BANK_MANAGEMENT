@@ -248,7 +248,7 @@ const MapPage = () => {
                         <MapContainer center={userLocation} zoom={13} zoomControl={true} style={{ height: '100%', width: '100%' }}>
                         {MAPBOX_TOKEN ? (
                             <TileLayer
-                                url={`https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=${MAPBOX_TOKEN}`}
+                                url={`https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v11/tiles/{z}/{x}/{y}?access_token=${MAPBOX_TOKEN}`}
                                 attribution='&copy; Mapbox &copy; OpenStreetMap'
                             />
                         ) : (

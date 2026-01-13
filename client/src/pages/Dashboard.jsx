@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import { Plus, Download, MapPin, Activity, Heart, Calendar, User as UserIcon, Award, Timer } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import FaceAuth from '../components/FaceAuth';
 
 const Dashboard = () => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('userInfo')));
     const [hospitals, setHospitals] = useState([]);
     
-    // Admin States
+    // Auth States
+    const [showReportAuth, setShowReportAuth] = useState(false);
     const [newHospital, setNewHospital] = useState({ name: '', email: '', phone: '', address: '', latitude: '', longitude: '' });
     const [message, setMessage] = useState('');
 
@@ -39,6 +41,11 @@ const Dashboard = () => {
     };
 
     const handleDownloadReport = async () => {
+        setShowReportAuth(true); // Require biometric verification
+    };
+
+    const proceedWithDownload = async () => {
+        setShowReportAuth(false);
         try {
             const response = await api.get('/report', { responseType: 'blob' });
             const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -47,6 +54,7 @@ const Dashboard = () => {
             link.setAttribute('download', `report_${new Date().toISOString()}.csv`);
             document.body.appendChild(link);
             link.click();
+            link.remove();
         } catch (error) {
             console.error(error);
             setMessage('Error downloading report');
@@ -284,6 +292,12 @@ const Dashboard = () => {
                     </div>
                 )}
             </div>
+            {showReportAuth && (
+                <FaceAuth 
+                    onVerify={proceedWithDownload}
+                    onCancel={() => setShowReportAuth(false)}
+                />
+            )}
         </div>
     );
 };
