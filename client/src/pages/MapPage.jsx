@@ -7,7 +7,7 @@ import 'leaflet-routing-machine';
 import api from '../services/api';
 import { User, Activity, MapPin, Navigation, Search, ChevronRight, Phone, Clock, Star, Heart } from 'lucide-react';
 
-const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN || '';
+const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN || 'pk.eyJ1IjoibW9oYW1tZWRyYXphMTkiLCJhIjoiY2x6cGdqcXF3MDBqejJqcXV6Z3EwdThpciJ9.5Y0XnB7N2H6A7_z2pX7H_w';
 
 
 // Custom Icons
@@ -224,8 +224,8 @@ const MapPage = () => {
                                     address={h.address} 
                                     distance={h.distance} 
                                     phone={h.phone}
-                                    onClick={() => setDestination([h.lat, h.lng])}
-                                    active={destination && destination[0] === h.lat}
+                                    onClick={() => setDestination([h.latitude, h.longitude])}
+                                    active={destination && destination[0] === h.latitude}
                                 />
                             ))
                         ) : (
@@ -277,9 +277,9 @@ const MapPage = () => {
                         {!showDonors && hospitals.map(h => (
                              <Marker 
                                 key={h.id} 
-                                position={[h.lat, h.lng]} 
+                                position={[h.latitude, h.longitude]} 
                                 icon={hospitalIcon}
-                                eventHandlers={{ click: () => setDestination([h.lat, h.lng]) }}
+                                eventHandlers={{ click: () => setDestination([h.latitude, h.longitude]) }}
                             >
                                 <Popup>
                                     <div className="p-3 w-48">

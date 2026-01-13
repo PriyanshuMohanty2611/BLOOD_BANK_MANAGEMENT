@@ -19,49 +19,33 @@ const generateReport = async (req, res) => {
       quantity: item.quantity
     }));
 
-    const scriptPath = path.join(__dirname, '../scripts/report_generator.py');
-    const venvPythonPath = path.join(__dirname, '../../.venv/Scripts/python.exe');
+    const { Parser } = require('json2csv');
     
-    // Check if venv python exists, else use default 'python'
-    const pythonCmd = fs.existsSync(venvPythonPath) ? venvPythonPath : (process.env.PYTHON_PATH || 'python');
-    
-    const process_py = spawn(pythonCmd, [scriptPath]);
+    const fields = [
+      { label: 'Hospital', value: 'hospitalName' },
+      { label: 'Blood Group', value: 'bloodGroup' },
+      { label: 'Quantity', value: 'quantity' },
+      { label: 'Timestamp', value: () => new Date().toLocaleString() }
+    ];
 
-    process_py.stdin.write(JSON.stringify(data));
-    process_py.stdin.end();
+    const json2csvParser = new Parser({ fields });
+    const csv = json2csvParser.parse(data);
 
-    let outputData = '';
-    let errorData = '';
+    const reportsDir = path.join(__dirname, '../reports');
+    if (!fs.existsSync(reportsDir)) {
+      fs.mkdirSync(reportsDir, { recursive: true });
+    }
 
-    process_py.stdout.on('data', (data) => {
-        outputData += data.toString();
-    });
+    const filename = `inventory_report_${Date.now()}.csv`;
+    const filePath = path.join(reportsDir, filename);
 
-    process_py.stderr.on('data', (data) => {
-        errorData += data.toString();
-        // console.error(`Python Stderr: ${data}`);
-    });
+    fs.writeFileSync(filePath, csv);
 
-    process_py.on('close', (code) => {
-        if (code !== 0) {
-            console.error("Python Script Error:", errorData);
-            return res.status(500).json({ message: 'Report generation failed', error: errorData });
-        }
-        
-        const filePath = outputData.trim();
-        
-        setTimeout(() => {
-             if (fs.existsSync(filePath)) {
-                res.download(filePath, (err) => {
-                    if (err) {
-                         console.error("Download Error:", err);
-                         if(!res.headersSent) res.status(500).send("Could not download file");
-                    }
-                });
-            } else {
-                 if(!res.headersSent) res.status(404).json({ message: 'Report file not found', path: filePath });
-            }
-        }, 500);
+    res.download(filePath, filename, (err) => {
+      if (err) {
+        console.error("Download Error:", err);
+      }
+      // Optional: Cleanup old files here
     });
 
   } catch (error) {
