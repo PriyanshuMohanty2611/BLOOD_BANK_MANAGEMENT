@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Heart, Users, Activity, MapPin, ArrowRight, ShieldCheck, Clock, Hospital, Star, HeartPulse, ChevronRight, Search } from 'lucide-react';
+import { Heart, Users, Activity, MapPin, ArrowRight, ShieldCheck, Clock, Hospital, Star, HeartPulse, ChevronRight, Search, Phone } from 'lucide-react';
 
 const Home = () => {
     return (

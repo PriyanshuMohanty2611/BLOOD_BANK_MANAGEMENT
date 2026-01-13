@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
-import { Plus, Download, MapPin, Activity, Heart, Calendar, User as UserIcon } from 'lucide-react';
+import { Plus, Download, MapPin, Activity, Heart, Calendar, User as UserIcon, Award, Timer } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 const Dashboard = () => {
