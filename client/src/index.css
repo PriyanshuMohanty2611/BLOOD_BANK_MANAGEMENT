@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-white text-gray-900 antialiased font-sans;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply text-gray-900 font-bold;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-blood-600 text-white px-6 py-2 rounded-full font-semibold hover:bg-blood-700 transition-all duration-300 shadow-lg shadow-blood-500/30 hover:shadow-blood-500/50 hover:-translate-y-0.5 active:scale-95;
+  }
+  .btn-secondary {
+    @apply bg-white text-blood-600 border-2 border-blood-600 px-6 py-2 rounded-full font-semibold hover:bg-blood-50 transition-all duration-300 hover:-translate-y-0.5 active:scale-95;
+  }
+  .card {
+    @apply bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:border-blood-100 transition-all duration-500;
+  }
+  .glass {
+    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-xl;
+  }
+  .glass-dark {
+    @apply bg-gray-900/70 backdrop-blur-md border border-white/10 shadow-xl;
+  }
+
+  /* Blood Rain Animation */
+  @keyframes fall {
+    0% {
+      transform: translateY(-20px) scale(0.8);
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.6;
+    } /* Visible at start */
+    80% {
+      opacity: 0.6;
+    }
+    100% {
+      transform: translateY(110vh) scale(1.1);
+      opacity: 0;
+    }
+  }
+
+  .blood-drop {
+    position: fixed;
+    top: -20px;
+    z-index: 0; /* Behind content but visible on background */
+    pointer-events: none; /* Click through */
+    background: linear-gradient(
+      135deg,
+      rgba(160, 0, 0, 0.9),
+      rgba(120, 0, 0, 0.6)
+    );
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; /* Droplet shape */
+    box-shadow: inset 2px 2px 4px rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(1px);
+    animation: fall linear infinite;
+  }
+
+  /* Custom Transitions & Animations */
+  @keyframes blob {
+    0% { transform: translate(0px, 0px) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+    100% { transform: translate(0px, 0px) scale(1); }
+  }
+  .animate-blob {
+    animation: blob 7s infinite;
+  }
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  .animate-pulse-slow {
+    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  /* Premium Scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #cbd5e1;
+  }
+
+  /* Map Fixes */
+  .leaflet-container {
+    z-index: 0 !important;
+  }
+}
