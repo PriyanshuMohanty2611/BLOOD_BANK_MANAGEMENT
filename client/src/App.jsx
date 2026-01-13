@@ -39,7 +39,6 @@ function App() {
                 <Route path="/search" element={<Search />} />
                 <Route path="/reports" element={<ReportPage />} />
                 <Route path="/calendar" element={<CalendarPage />} />
-                <Route path="/certificate" element={<CertificatePage />} />
                 <Route path="/rewards" element={<RewardsPage />} />
                 <Route path="/predictions" element={<Predictions />} />
             </Routes>

@@ -32,7 +32,6 @@ const Navbar = () => {
                         <NavLink to="/search" icon={<Search size={18}/>} label="Find Blood" />
                         <NavLink to="/map" icon={<MapPin size={18}/>} label="Locate Hospital" />
                         <NavLink to="/predictions" icon={<Activity size={18}/>} label="Predictions" />
-                        <NavLink to="/certificate" icon={<FileText size={18}/>} label="My Certificate" />
                         <NavLink to="/reports" icon={<Activity size={18}/>} label="Health Report" />
                         <NavLink to="/calendar" icon={<Calendar size={18}/>} label="Calendar" />
                         <NavLink to="/rewards" icon={<Gift size={18}/>} label="Rewards" />
@@ -70,7 +69,6 @@ const Navbar = () => {
                     <div className="px-4 pt-4 pb-6 space-y-2">
                         <MobileNavLink to="/" icon={<Home size={20}/>} label="Home" onClick={() => setIsOpen(false)} />
                         <MobileNavLink to="/search" icon={<Search size={20}/>} label="Find Blood" onClick={() => setIsOpen(false)} />
-                        <MobileNavLink to="/certificate" icon={<FileText size={20}/>} label="My Certificate" onClick={() => setIsOpen(false)} />
                         <MobileNavLink to="/reports" icon={<Activity size={20}/>} label="Health Report" onClick={() => setIsOpen(false)} />
                         <MobileNavLink to="/rewards" icon={<Gift size={20}/>} label="Rewards" onClick={() => setIsOpen(false)} />
                         
