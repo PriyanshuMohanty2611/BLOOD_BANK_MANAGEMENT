@@ -5,6 +5,7 @@ import { Download, ShieldCheck } from 'lucide-react';
 import FaceAuth from '../components/FaceAuth';
 
 const ReportPage = () => {
+    const [user] = useState(JSON.parse(localStorage.getItem('userInfo')) || {});
     const [isVerifying, setIsVerifying] = useState(false);
 
     const handleDownloadReport = () => {
@@ -33,8 +34,14 @@ const ReportPage = () => {
             <Navbar />
             <div className="max-w-7xl mx-auto py-20 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-3xl mx-auto text-center mb-16">
-                    <h1 className="text-5xl font-black text-gray-900 tracking-tighter mb-4">Inventory Intelligence</h1>
-                    <p className="text-xl text-gray-500 font-medium">Generate high-precision reports for hospital blood stock and regional analytics.</p>
+                    <h1 className="text-5xl font-black text-gray-900 tracking-tighter mb-4">
+                        {user.role === 'admin' ? 'Regional Intelligence' : 'My Health Passport'}
+                    </h1>
+                    <p className="text-xl text-gray-500 font-medium">
+                        {user.role === 'admin' 
+                            ? 'Generate high-precision reports for regional hospital blood stock and analytics.' 
+                            : 'Download your certified donation history and vital health metric summary.'}
+                    </p>
                 </div>
 
                 <div className="max-w-xl mx-auto bg-white p-12 rounded-[2.5rem] shadow-2xl shadow-gray-200/50 border border-gray-100 text-center relative overflow-hidden group">
@@ -43,8 +50,14 @@ const ReportPage = () => {
                         <ShieldCheck size={40} />
                     </div>
                     
-                    <h2 className="text-3xl font-black text-gray-900 mb-4">Export Protocol</h2>
-                    <p className="mb-10 text-gray-500 font-medium leading-relaxed">System-wide inventory aggregation requires secondary biometric verification for security audits.</p>
+                    <h2 className="text-3xl font-black text-gray-900 mb-4">
+                        {user.role === 'admin' ? 'Export Protocol' : 'Personal Records'}
+                    </h2>
+                    <p className="mb-10 text-gray-500 font-medium leading-relaxed">
+                        {user.role === 'admin'
+                            ? 'System-wide inventory aggregation requires secondary biometric verification for security audits.'
+                            : 'Accessing your private medical interactions requires a quick biometric check to ensure data privacy.'}
+                    </p>
                     
                     <button 
                         onClick={handleDownloadReport} 

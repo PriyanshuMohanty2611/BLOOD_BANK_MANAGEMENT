@@ -72,19 +72,22 @@ const MapPage = () => {
     useEffect(() => {
         // Get User Location
         if (navigator.geolocation) {
+            const timer = setTimeout(() => {
+                if (!userLocation) setUserLocation([20.2961, 85.8245]);
+            }, 5000);
+
             navigator.geolocation.getCurrentPosition(
                 (position) => {
+                    clearTimeout(timer);
                     setUserLocation([position.coords.latitude, position.coords.longitude]);
-                    setLoading(false);
                 },
                 () => {
-                    setUserLocation([28.6139, 77.2090]); // Default Delhi
-                    setLoading(false);
+                    clearTimeout(timer);
+                    setUserLocation([20.2961, 85.8245]);
                 }
             );
         } else {
-             setUserLocation([28.6139, 77.2090]);
-             setLoading(false);
+             setUserLocation([20.2961, 85.8245]);
         }
     }, []);
 
@@ -111,17 +114,19 @@ const MapPage = () => {
                 
                 // Add distance and transform
                 let hospitalsWithDist = hospitalData.map(h => {
-                    const lat = parseFloat(h.latitude);
-                    const lng = parseFloat(h.longitude);
+                    const lat = parseFloat(h.latitude) || 0;
+                    const lng = parseFloat(h.longitude) || 0;
                     return {
                         ...h,
-                        lat,
-                        lng,
+                        latitude: lat,
+                        longitude: lng,
+                        lat: lat, // Legacy support
+                        lng: lng, // Legacy support
                         distance: (lat && lng) ? haversine(userLocation[0], userLocation[1], lat, lng) : 999
                     };
                 });
 
-                // Fallback: If no hospitals in DB, add some nearby mock ones for "Perfect" look
+                // Fallback: If no hospitals in DB, add some nearby mock ones
                 if (hospitalsWithDist.length === 0) {
                     hospitalsWithDist = [
                         { id: 'f1', name: 'Lifeflow Premium Hospital', address: 'Medical Square, Center', latitude: userLocation[0] + 0.012, longitude: userLocation[1] + 0.015, rating: 4.9, lat: userLocation[0] + 0.012, lng: userLocation[1] + 0.015, distance: 1.2, phone: '+91 888 222 1111' },
@@ -133,10 +138,9 @@ const MapPage = () => {
                 setHospitals(hospitalsWithDist.sort((a,b) => a.distance - b.distance));
              } catch (e) {
                  console.error("Fetch Error:", e);
-                 // Graceful Mock Fallback
                  const mocks = [
-                    { id: 'f1', name: 'Emergency Support Alpha', address: 'Main St 12', lat: userLocation[0] + 0.01, lng: userLocation[1] + 0.01, distance: 0.5, rating: 5.0 },
-                    { id: 'f2', name: 'Central Blood Bank', address: 'Health Plaza', lat: userLocation[0] - 0.01, lng: userLocation[1] - 0.01, distance: 0.8, rating: 4.7 }
+                    { id: 'f1', name: 'Emergency Alpha', address: 'Main St', latitude: userLocation[0] + 0.01, longitude: userLocation[1] + 0.01, lat: userLocation[0] + 0.01, lng: userLocation[1] + 0.01, distance: 0.5, rating: 5.0, phone: '102' },
+                    { id: 'f2', name: 'Central Blood Bank', address: 'Health Plaza', latitude: userLocation[0] - 0.01, longitude: userLocation[1] - 0.01, lat: userLocation[0] - 0.01, lng: userLocation[1] - 0.01, distance: 0.8, rating: 4.7, phone: '102' }
                  ];
                  setHospitals(mocks);
              }
@@ -244,8 +248,16 @@ const MapPage = () => {
 
                 {/* Map Interface */}
                 <div className="flex-1 h-full relative z-0">
-                    {userLocation && (
-                        <MapContainer center={userLocation} zoom={13} zoomControl={true} style={{ height: '100%', width: '100%' }}>
+                    {!userLocation ? (
+                        <div className="h-full w-full flex flex-col items-center justify-center bg-gray-900 gap-6">
+                            <Activity className="w-16 h-16 text-blood-600 animate-pulse" />
+                            <div className="text-center">
+                                <h3 className="text-white text-2xl font-black tracking-tighter mb-2">Syncing Satellite Geometry...</h3>
+                                <p className="text-gray-500 font-medium">Please allow location access for real-time tracking</p>
+                            </div>
+                        </div>
+                    ) : (
+                        <MapContainer center={userLocation} zoom={13} zoomControl={false} style={{ height: '100%', width: '100%' }}>
                         {MAPBOX_TOKEN ? (
                             <TileLayer
                                 url={`https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v11/tiles/{z}/{x}/{y}?access_token=${MAPBOX_TOKEN}`}
