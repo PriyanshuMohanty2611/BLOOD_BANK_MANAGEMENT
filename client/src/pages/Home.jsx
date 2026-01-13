@@ -105,10 +105,10 @@ const Home = () => {
                     </div>
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <HospitalCard name="City Medical Center" location="Downtown" rating={4.9} units={120} />
-                        <HospitalCard name="St. Mary's General" location="Westside" rating={4.8} units={85} />
-                        <HospitalCard name="Apex Care Hospital" location="North Square" rating={4.7} units={210} />
-                        <HospitalCard name="Heritage Health" location="South View" rating={4.9} units={65} />
+                        <HospitalCard name="City Medical Center" location="Downtown" rating={4.9} units={120} phone="+91 888 222 1111" />
+                        <HospitalCard name="St. Mary's General" location="Westside" rating={4.8} units={85} phone="+91 102" />
+                        <HospitalCard name="Apex Care Hospital" location="North Square" rating={4.7} units={210} phone="+91 777 333 4444" />
+                        <HospitalCard name="Heritage Health" location="South View" rating={4.9} units={65} phone="+91 108" />
                     </div>
                 </div>
             </section>
@@ -158,8 +158,8 @@ const FeatureCard = ({ icon, title, desc, gradient }) => (
     </div>
 );
 
-const HospitalCard = ({ name, location, rating, units }) => (
-    <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:border-blood-100 transition-all group">
+const HospitalCard = ({ name, location, rating, units, phone }) => (
+    <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:border-blood-100 transition-all group flex flex-col">
         <div className="flex justify-between items-start mb-6">
             <div className="p-3 bg-gray-50 rounded-2xl text-gray-600 group-hover:bg-blood-50 group-hover:text-blood-600 transition-colors">
                 <Hospital size={24} />
@@ -169,10 +169,20 @@ const HospitalCard = ({ name, location, rating, units }) => (
             </div>
         </div>
         <h4 className="text-xl font-bold text-gray-900 mb-1">{name}</h4>
-        <p className="text-gray-500 text-sm mb-4 flex items-center gap-1"><MapPin size={14}/> {location}</p>
-        <div className="pt-4 border-t border-gray-50 flex items-center justify-between">
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Available Stock</span>
-            <span className="text-blood-600 font-black">{units} Units</span>
+        <p className="text-gray-500 text-sm mb-6 flex items-center gap-1"><MapPin size={14}/> {location}</p>
+        
+        <div className="mt-auto space-y-4">
+            <a 
+                href={`tel:${phone}`}
+                className="w-full bg-emerald-50 text-emerald-600 py-3 rounded-xl font-black text-xs uppercase tracking-widest text-center flex items-center justify-center gap-2 hover:bg-emerald-600 hover:text-white transition-all shadow-sm"
+            >
+                <Phone size={14} /> Call Emergency
+            </a>
+            
+            <div className="pt-4 border-t border-gray-50 flex items-center justify-between">
+                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Available Stock</span>
+                <span className="text-blood-600 font-black">{units} Units</span>
+            </div>
         </div>
     </div>
 );

@@ -15,6 +15,7 @@ import CertificatePage from './pages/CertificatePage';
 import Predictions from './pages/Predictions';
 import Navbar from './components/Navbar';
 import Chatbot from './components/Chatbot';
+import EmergencySystem from './components/EmergencySystem';
 import Footer from './components/Footer';
 import { Toaster } from 'react-hot-toast';
 
@@ -26,6 +27,7 @@ function App() {
             <BloodRain />
             <Navbar />
             <Chatbot />
+            <EmergencySystem />
             <div className="flex-grow">
                <Routes>
                 <Route path="/" element={<Home />} />

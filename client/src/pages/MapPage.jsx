@@ -124,9 +124,9 @@ const MapPage = () => {
                 // Fallback: If no hospitals in DB, add some nearby mock ones for "Perfect" look
                 if (hospitalsWithDist.length === 0) {
                     hospitalsWithDist = [
-                        { id: 'f1', name: 'Lifeflow Premium Hospital', address: 'Medical Square, Center', latitude: userLocation[0] + 0.012, longitude: userLocation[1] + 0.015, rating: 4.9, lat: userLocation[0] + 0.012, lng: userLocation[1] + 0.015, distance: 1.2 },
-                        { id: 'f2', name: 'Elite Care Emergency', address: 'North Avenue', latitude: userLocation[0] - 0.008, longitude: userLocation[1] + 0.02, rating: 4.8, lat: userLocation[0] - 0.008, lng: userLocation[1] + 0.02, distance: 0.9 },
-                        { id: 'f3', name: 'St. Hearts Cardiology', address: 'South District', latitude: userLocation[0] + 0.025, longitude: userLocation[1] - 0.01, rating: 4.7, lat: userLocation[0] + 0.025, lng: userLocation[1] - 0.01, distance: 2.1 }
+                        { id: 'f1', name: 'Lifeflow Premium Hospital', address: 'Medical Square, Center', latitude: userLocation[0] + 0.012, longitude: userLocation[1] + 0.015, rating: 4.9, lat: userLocation[0] + 0.012, lng: userLocation[1] + 0.015, distance: 1.2, phone: '+91 888 222 1111' },
+                        { id: 'f2', name: 'Elite Care Emergency', address: 'North Avenue', latitude: userLocation[0] - 0.008, longitude: userLocation[1] + 0.02, rating: 4.8, lat: userLocation[0] - 0.008, lng: userLocation[1] + 0.02, distance: 0.9, phone: '+91 777 333 4444' },
+                        { id: 'f3', name: 'St. Hearts Cardiology', address: 'South District', latitude: userLocation[0] + 0.025, longitude: userLocation[1] - 0.01, rating: 4.7, lat: userLocation[0] + 0.025, lng: userLocation[1] - 0.01, distance: 2.1, phone: '+91 666 555 0000' }
                     ];
                 }
 
@@ -223,6 +223,7 @@ const MapPage = () => {
                                     title={h.name} 
                                     address={h.address} 
                                     distance={h.distance} 
+                                    phone={h.phone}
                                     onClick={() => setDestination([h.lat, h.lng])}
                                     active={destination && destination[0] === h.lat}
                                 />
@@ -283,13 +284,21 @@ const MapPage = () => {
                                 <Popup>
                                     <div className="p-3 w-48">
                                         <b className="text-blood-700 text-lg block mb-1 leading-tight">{h.name}</b>
-                                        <p className="text-gray-600 text-xs mb-3 font-medium">{h.address}</p>
-                                        <button 
-                                            onClick={() => setDestination([h.lat, h.lng])}
-                                            className="w-full bg-blood-600 text-white text-xs font-bold py-2 px-3 rounded-lg flex items-center justify-center gap-2 hover:bg-blood-700 transition"
-                                        >
-                                            <Navigation size={12} /> Get Directions
-                                        </button>
+                                        <p className="text-[10px] text-gray-500 font-bold mb-3 uppercase tracking-tighter italic">{h.address}</p>
+                                        <div className="flex flex-col gap-2">
+                                            <a 
+                                                href={`tel:${h.phone || '102'}`}
+                                                className="bg-blood-600 text-white py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-center flex items-center justify-center gap-2 hover:bg-blood-700 transition-colors"
+                                            >
+                                                <Phone size={12} /> Call Emergency
+                                            </a>
+                                            <button 
+                                                onClick={() => setDestination([h.lat, h.lng])}
+                                                className="bg-gray-100 text-gray-900 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-gray-200 transition-colors"
+                                            >
+                                                Navigate Path
+                                            </button>
+                                        </div>
                                     </div>
                                 </Popup>
                             </Marker>
@@ -342,7 +351,7 @@ const MapPage = () => {
     );
 };
 
-const FacilityCard = ({ title, address, distance, onClick, active }) => (
+const FacilityCard = ({ title, address, distance, phone, onClick, active }) => (
     <div 
         onClick={onClick}
         className={`p-5 rounded-3xl border transition-all cursor-pointer group ${active ? 'bg-blood-50 border-blood-200 ring-2 ring-blood-100 shadow-lg' : 'bg-white border-gray-50 hover:border-blood-100 hover:shadow-md'}`}
@@ -355,11 +364,17 @@ const FacilityCard = ({ title, address, distance, onClick, active }) => (
         </div>
         <h4 className="text-lg font-black text-gray-900 mb-1 leading-tight group-hover:text-blood-600 transition-colors">{title}</h4>
         <p className="text-gray-500 text-xs font-medium mb-4 flex items-center gap-1 leading-relaxed"><MapPin size={12} className="shrink-0"/> {address}</p>
-        <div className="flex items-center justify-between pt-4 border-t border-gray-50">
-            <div className="flex items-center gap-1 text-yellow-600 font-bold text-xs">
+        <div className="flex items-center justify-between pt-4 border-t border-gray-50 gap-4">
+             <a 
+                href={`tel:${phone || '102'}`}
+                onClick={(e) => e.stopPropagation()}
+                className="flex-grow bg-emerald-50 text-emerald-600 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest text-center flex items-center justify-center gap-2 hover:bg-emerald-100 transition-colors"
+            >
+                <Phone size={14} /> Direct Call
+            </a>
+            <div className="flex items-center gap-1 text-yellow-600 font-bold text-xs shrink-0">
                 <Star size={12} fill="currentColor"/> 4.8
             </div>
-            <span className="text-blood-600 font-bold text-xs flex items-center gap-1">Stock: 24h <ChevronRight size={14}/></span>
         </div>
     </div>
 );
